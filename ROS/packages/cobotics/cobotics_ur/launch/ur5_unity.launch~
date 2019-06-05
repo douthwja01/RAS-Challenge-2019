@@ -1,0 +1,18 @@
+<launch>
+<!-- Load the UR5 control and planning nodes -->
+<include file="$(find cobotics_ur)/launch/ur5.launch">
+	<param name="limited" value="true"/>
+</include>
+
+<!-- Instantiate the ROS Bridge -->
+<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+	<param name="port" value="9090"/>
+</include>
+
+<!-- Instantiate the File Server -->
+<node name="file_server" pkg="file_server" type="file_server" output="screen"/>
+
+<!-- Instantiate the rqt_graph to visualise the connection -->
+<node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
+
+</launch>

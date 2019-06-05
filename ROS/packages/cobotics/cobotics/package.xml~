@@ -1,0 +1,25 @@
+<package>
+  <name>cobotics</name>
+  <version>1.2.1</version>
+  <description>
+Unity interface for robotics components and packages. Including drivers, descriptions, and utilities for the Universal Robot Arms.
+  </description>
+
+  <author>James Douthwaite</author>
+  <author>Jonathan Aitken</author>
+  <author>James Law</author>
+  <maintainer email="douthwaiteja@gmail.com">James A. Douthwaite</maintainer>
+  <maintainer email="jonathan.aitken@sheffield.ac.uk">Jonathan Aitken</maintainer>
+
+  <license>BSD</license>
+
+  <!--<url type="website">http://</url>-->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>cobotics_kuka</run_depend>
+  <run_depend>cobotics_ur</run_depend>
+
+  <export>  
+	<!-- <metapackage/> -->
+  </export> 
+</package>

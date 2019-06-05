@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Parse the provided server parameters -->
+  <arg name="ip" default="172.31.1.50" doc="The IP address of the kuka tcp listener." />
+  <arg name="port" default="1111" doc="The port on the kuka tcp listener"/>
+  
+  <!-- Bring up the kuka API to interact with -->
+  <node name="kuka_api" pkg="cobotics_kuka" type="server_V30032017.py" output="screen">
+    <param name="ip" value="$(arg ip)" />
+    <param name="port" value="$(arg port)" />
+  </node>
+  <!-- Launch rviz? -->
+</launch>
