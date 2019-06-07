@@ -1,4 +1,4 @@
-# UK-RAS MANUFACTURING ROBOTICS CHALLENGE
+# UK-RAS Manufacturing Robotics Challenge
 
 The software respository for the RAS Challange held at the AMRC in June 2019.
 
