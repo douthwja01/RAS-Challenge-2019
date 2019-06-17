@@ -101,7 +101,7 @@ Now make the Action Package accessible to the Google Assistant Server.
 While you can do the steps in this section on the device, it may be easier to do them on your development machine. These commands do not require a virtual environment to run.
 
 1. [Download](https://developers.google.com/actions/tools/gactions-cli) the ```gactions``` command line tool
-	* Note: On Linux, run chmod +x gactions to make the downloaded binary executable.
+	* Note: On Linux, run ```chmod +x gactions``` to make the downloaded binary executable.
 2. Remove any existing credentials from the same directory as the gactions tool.
 ```
 rm creds.data
