@@ -95,22 +95,28 @@ Create a file (e.g., actions.json) that defines a test command – open/close th
     }
 }
 ```
-This example uses the following information to define the Custom Device Action:
-
-1. A pattern to try to match against the user query (blink N times)
-2. The Custom Device Action to associate with a matched query (com.example.actions.BlinkLight) for organizational purposes
-3. Text that is spoken back to the user if the device supports the action (Blinking N times)
-4. A command name (com.example.commands.BlinkLight) that is sent back to the device, along with any parameters (a number and possibly a description of the speed)
-
-Note the following:
-
-You can use Schema.org-defined types in the query pattern.
-The types [...] array defines the list of custom types (for example, $Speed).
-Custom types can be used in the query pattern. Any of the synonyms in that type can be spoken by the user to match the query pattern.
-When a synonym does match, the type instance (speed) would return the normalized key (SLOWLY). There can be multiple entities in case, for example, there are different lights that support different speeds of blinking.
-Parts of the request TTS pattern can be optional. For example, use ($Speed:speed)? in the query pattern to make this part optional.
-$type.raw (for example, $speed.raw) in the response TTS is replaced by the word(s) the user actually spoke.
-Descriptions for many of these fields are available in the Actions Package reference documentation.
-
 ## Deploy the Action Package
+Now make the Action Package accessible to the Google Assistant Server.
 
+While you can do the steps in this section on the device, it may be easier to do them on your development machine. These commands do not require a virtual environment to run.
+
+1. [Download](https://developers.google.com/actions/tools/gactions-cli) the ```gactions``` command line tool
+	* Note: On Linux, run chmod +x gactions to make the downloaded binary executable.
+2. Remove any existing credentials from the same directory as the gactions tool.
+```
+rm creds.data
+```
+3. Save your Action Package to Google by using the gactions CLI. Replace project_id with your Actions Console project ID.
+```
+./gactions update --action_package actions.json --project project_id
+```
+4. The first time you run this command you will be given a URL and be asked to sign in. Ask for help if this is the case.
+
+5. Deploy your action package into test mode by using the gactions CLI. You must have saved your Action Package to Google at least once before running this command. Test mode enables the action package on your user account only.
+```
+./gactions test --action_package actions.json --project project_id
+```
+7. To update the action package, use the gactions update command.
+
+For more info visit:
+https://developers.google.com/assistant/sdk/guides/library/python/extend/custom-actions
