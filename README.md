@@ -34,3 +34,10 @@ Additional:
 Teams will be provided with a KUKA iiwa robot equipped with a gripper, microphone,
 camera, and tray of parts. The robot will be integrated to allow safe operation but will require
 programming through ROS.
+
+# Instruction to run the robot simulation:
+1. Ensure that ROS Master is running by typing `roscore` in the new terminal window.
+  The terminal window can be opened using `Ctrl + Alt + t`
+2. Once the roscore is up and running open the new terminal window (`Ctrl + Shift + t`) and type the following `roslaunch iiwa_moveit moveit_planning_execution.launch`
+3. After a few seconds, the new window with **Rviz** and **Gazebo** should be opened. **Rviz** is a scene visualization tool, which displays the robot you are going to control and the scene in which the robot is set. **Gazebo** is a simulation of the actual robot - any paths planned in **Rviz** will be shown in **Gazebo** (providing the path was valid)
+4. The `Pick and Place` demo script can be run using the following command (in a new terminal window) `roslaunch pick_place pick_place.launch`. At the current stage, the script is still being edited, hence the movement of the robot may or may not be shown. The instruction on how the script works will appear shortly.
