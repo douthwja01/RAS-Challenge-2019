@@ -15,22 +15,26 @@ from tf.transformations import *
 class PickPlace():
 
 	def __init__(self):
-		# Initializing the node
-		moveit_commander.roscpp_initialize(sys.argv)
-		rospy.init_node('iiwa_pick_place', anonymous=False)
-		move_group = "manipulator"
+		try:
+			# Initializing the node
+			moveit_commander.roscpp_initialize(sys.argv)
+			rospy.init_node('iiwa_pick_place', anonymous=False)
+			move_group = "manipulator"
+			sim = rospy.get_param("/simulation")
 
-		# Instantiating a Robot Commander
-		self._robot = moveit_commander.RobotCommander()
+			# Instantiating a Robot Commander
+			self._robot = moveit_commander.RobotCommander()
 
-		# Instantiating a Scene
-		self._scene = moveit_commander.PlanningSceneInterface()
+			# Instantiating a Scene
+			self._scene = moveit_commander.PlanningSceneInterface()
 
-		# Instantiating a Move Group
-		self._move_group = moveit_commander.MoveGroupCommander(move_group)
+			# Instantiating a Move Group
+			self._move_group = moveit_commander.MoveGroupCommander(move_group)
 
-		# Publisher for Kuka API
-		self._kuka_api_pub = rospy.Publisher('/moveit_iiwa', String, queue_size=10)
+			# Publisher for Kuka API
+			self._kuka_api_pub = rospy.Publisher('/moveit_iiwa', String, queue_size=10)
+		except:
+			print("An error occured. Make sure you are running MoveIt simulation first!")
 
 	# Moves robots to joint goal
 	def move_to_joint_goal(self, joint_positions):
@@ -52,13 +56,12 @@ class PickPlace():
 		pose_goal.orientation.y = q[1]
 		pose_goal.orientation.z = q[2]
 		pose_goal.orientation.w = q[3]
-		pose_goal.position.x = .5
-		pose_goal.position.y = .3
-		pose_goal.position.z = .5
+		pose_goal.position.x = .0
+		pose_goal.position.y = .0
+		pose_goal.position.z = .0
 
 		self._move_group.set_pose_target(pose_goal)
 		try:
-			self.check_if_move_valid()
 			plan = self._move_group.go(wait=True)
 			print("Moved correctly")
 		except Exception as e:
@@ -66,16 +69,6 @@ class PickPlace():
 		self._move_group.stop()
 
 		self._move_group.clear_pose_targets()
-
-	# Subscribes to /iiwa/move_group/feedback topic, to see if the requested path is valid
-	# The topic 
-	def check_if_move_valid(self):
-		valid_move_sub = rospy.Subscriber('/iiwa/move_group/feedback', MoveGroupActionFeedback, self.move_group_feedback_callback)
-
-	def move_group_feedback_callback(self, data):
-		print("inside")
-		feedback_msgs = data.data
-		print(feedback_msgs)
 
 	# Moves the robot to save position, defined in MoveIt! Config
 	def move_to_saved_position(self, name):
@@ -127,12 +120,32 @@ class PickPlace():
 		# Unregisteres from the topic
 		self._join_state_sub.unregister()
 
+def display_menu():
+	print('\n\n\n')
+	print('*'*30)
+	print('*'*30)
+	print('**'+' '*26+'**')
+	print('**'+' '*26+'**')
+	print('**'+' '*7+'RAS HACKATHON'+' '*6+'**')
+	print('**'+' '*26+'**')
+	print('**'+' '*26+'**')
+	print('*'*30)
+	print('*'*30)
+	print('1. Show `Pick and Place` Demonstration')
+	print('2. Reset robot to Home Position')
+	print('3. Move robot to XYZ Position')
+	print('4. Move robot to saved position')
+	print('5. Exit')
+
+
+
 if __name__ == '__main__':
 	pick_place = PickPlace()
 	rospy.sleep(2)
+	display_menu()
 	#pick_place.set_robots_initial_state()
 	#rospy.sleep(2)
-	pick_place.move_to_pose()
+	#pick_place.move_to_pose()
 
 	# Necessary to keep the node running
-	rospy.spin()
+	#rospy.spin()
