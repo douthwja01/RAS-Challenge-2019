@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:macro name="end_effector" params="prefix">
+
+<material name="gray">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+</material>
+
+<!-- link list -->
+<link name="${prefix}zimmer">
+    <!-- <inertial>
+    </inertial> -->
+
+    <visual>
+        <origin xyz="0.1 -0.037 -0.05" rpy="0 0 ${pi/2}"/>
+        <geometry>
+            <mesh filename="package://iiwa_description/meshes/GEP5008N_gripper/BRACKET ASSEMBLY.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="gray"/>
+    </visual>
+    <collision>
+        <origin xyz="0.1 -0.037 -0.05" rpy="0 0 ${pi/2}"/>
+            <geometry>
+                <mesh filename="package://iiwa_description/meshes/GEP5008N_gripper/BRACKET ASSEMBLY.stl" scale="1 1 1"/>        
+            </geometry>
+            <material name="gray"/>
+    </collision>
+</link>
+<!-- <link name="${prefix}tool"/> -->
+<!-- end of link list -->
+
+<!-- join lists -->
+<joint name="${prefix}tool0-grip" type="fixed">
+    <parent link="${prefix}iiwa_link_ee"/>
+    <child link="${prefix}zimmer"/>
+    <origin xyz="0 0 0" rpy="0 0 0 "/>
+</joint>
+</xacro:macro>
+</robot>
