@@ -1,0 +1,6 @@
+<launch>
+	<group ns="iiwa">
+		<node name="pick_place" pkg="iiwa_moveit" type="pick_place_demo.py" output="screen"/>
+		<remap from="moveit_iiwa" to="/moveit_iiwa"/>
+	</group>
+</launch>
