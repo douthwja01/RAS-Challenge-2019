@@ -1,0 +1,6 @@
+<launch>
+	<group ns="iiwa">
+		<node name="pick_place" pkg="pick_place" type="pick_place_demo.py" output="screen"/>
+		<remap from="pick_place" to="/pick_place"/>
+	</group>
+</launch>
