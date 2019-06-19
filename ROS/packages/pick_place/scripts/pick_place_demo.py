@@ -36,6 +36,7 @@ class PickPlace():
 			# Publisher for Kuka API
 			self._kuka_api_pub = rospy.Publisher('/moveit_iiwa', String, queue_size=10)
 
+			# Poses 
 			self._pose_over_tools = self.create_pose(0.999, -0.000, -0.001, 0.045, 0.365, 0.164, 0.623)
 			self._pose_to_tools = self.create_pose(0.999, -0.001, -0.001, 0.045, 0.365, 0.155, 0.525)
 			self._pose_place_away = self.create_pose(0.999, 0.000, -0.001, 0.045, 0.687, 0.143, 0.385)
@@ -155,12 +156,22 @@ class PickPlace():
 	# Moves the robot (in simulation) back to home position
 	def move_to_home(self):
 		print('Returning home')
-		self._move_group.set_pose_target(self._pose_over_tools)
+		self._move_group.set_pose_target(self._pose_home)
 		self._move_group.go(wait=True)
 		self._move_group.stop()
 		self._move_group.clear_pose_targets()
 		self.move_robot()
 		print('Nothing feels like home anymore')
+
+	# Sends the message to Kuka API asking the robot to open grippers
+	def open_grippers()
+		open_grippers_msg = 'OpenGripper'
+		self._kuka_api_pub.publish(open_grippers_msg)
+	
+	# Sends the message to Kuka API asking the robot to close grippers
+	def close_grippers()
+		close_grippers_msg = 'CloseGripper'
+		self._kuka_api_pub.publish(close_grippers_msg)
 
 	# Moves the robot to save position, defined in MoveIt! Config
 	def move_to_saved_position(self, name):
@@ -238,9 +249,7 @@ def display_menu(pick_place):
 	print('*'*40)
 	print('1. Show `Pick and Place` Demonstration')
 	print('2. Reset robot to Home Position')
-	print('3. Move robot to XYZ Position')
-	print('4. Move robot to saved position')
-	print('5. Exit')
+	print('3. Exit')
 	print('What do you want to do?')
 	try:
 		choice = int(readchar.readchar())
@@ -254,13 +263,9 @@ def display_menu(pick_place):
 		except:
 			print('Only numbers allowed')
 
-	if choice == 5:
+	if choice == 3:
 		print('Closing an application')
 		sys.exit()
-	elif choice == 4:
-		pass
-	elif choice == 3:
-		pass
 	elif choice == 2:
 		pick_place.move_to_home()
 		pass
