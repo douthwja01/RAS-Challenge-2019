@@ -22,7 +22,7 @@ class PickPlace():
 			moveit_commander.roscpp_initialize(sys.argv)
 			rospy.init_node('iiwa_pick_place', anonymous=False)
 			move_group = "manipulator"
-			sim = rospy.get_param("/simulation")
+			self.sim = rospy.get_param("/simulation")
 
 			# Instantiating a Robot Commander
 			self._robot = moveit_commander.RobotCommander()
@@ -73,6 +73,14 @@ class PickPlace():
 
 		return pose
 
+	def perform_move(self, pose):
+		self._move_group.set_pose_target(pose)
+		self._move_group.go(wait=True)
+		self._move_group.stop()
+		self._move_group.clear_pose_targets()
+		if not self.sim:
+			self.move_robot()
+
 	# Moves the robot to a pose
 	def move_to_pose(self):
 		## PICK AND PLACE SEQUENCE
@@ -85,93 +93,52 @@ class PickPlace():
 		## 7. Return to home
 
 		print('Moving over the tools')
-		self._move_group.set_pose_target(self._pose_over_tools)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_over_tools)
 		print('I like to move it, move it!')
 
 		print('Openning grippers')
-		#self.open_grippers()
-		#self._move_group.go(wait=True)
-		#self._move_group.stop()
-		#self._move_group.clear_pose_targets()
+		self.open_grippers()
 		print('Open up my eager eyes!')
 
 		print('Picking up a tool')
-		self._move_group.set_pose_target(self._pose_to_tools)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_to_tools)
 		print('I got to move like Jagger!')
 
 		print('Closing grippers')
-		#self.close_grippers()
-		#self._move_group.go(wait=True)
-		#self._move_group.stop()
-		#self._move_group.clear_pose_targets()
+		self.close_grippers()
 		print('Grippers closed')
 
 		print('Moving over the tools')
-		self._move_group.set_pose_target(self._pose_over_tools)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_over_tools)
 		print('I like to move it, move it!')
 
 		print('Placing away the tool')
-		self._move_group.set_pose_target(self._pose_place_away)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_place_away)
 		print('Tool placed away')
 
 		print('Placing away the tool')
-		self._move_group.set_pose_target(self._pose_place_table)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_place_table)
 		print('Tool placed away')
 
 		print('Openning grippers')
-		#self.open_grippers()
-		#self._move_group.go(wait=True)
-		#self._move_group.stop()
-		#self._move_group.clear_pose_targets()
+		self.open_grippers()
 		print('Grippers opened')
 
 		print('Returning home')
-		self._move_group.set_pose_target(self._pose_home)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
-		print('Nothing feels like home anymore')
-
-	# Moves the robot (in simulation) back to home position
-	def move_to_home(self):
-		print('Returning home')
-		self._move_group.set_pose_target(self._pose_home)
-		self._move_group.go(wait=True)
-		self._move_group.stop()
-		self._move_group.clear_pose_targets()
-		self.move_robot()
+		self.perform_move(self._pose_home)
 		print('Nothing feels like home anymore')
 
 	# Sends the message to Kuka API asking the robot to open grippers
-	def open_grippers()
+	def open_grippers(self):
 		open_grippers_msg = 'OpenGripper'
-		self._kuka_api_pub.publish(open_grippers_msg)
+		if not self.sim:
+			self._kuka_api_pub.publish(open_grippers_msg)
 	
 	# Sends the message to Kuka API asking the robot to close grippers
-	def close_grippers()
+	def close_grippers(self):
 		close_grippers_msg = 'CloseGripper'
-		self._kuka_api_pub.publish(close_grippers_msg)
+		if not self.sim:
+			self._kuka_api_pub.publish(close_grippers_msg)
 
 	# Moves the robot to save position, defined in MoveIt! Config
 	def move_to_saved_position(self, name):
@@ -196,6 +163,7 @@ class PickPlace():
 
 	# Sends the command to Kuka API to move the actual robot
 	def move_robot(self):
+		rate = rospy.Rate(10)
 		msg_to_send = "setPosition "
 		joint_positions_string = ""
 		joint_positions = self._move_group.get_current_joint_values()
@@ -209,7 +177,6 @@ class PickPlace():
 		self._kuka_api_pub.publish(msg_to_send)
 		print(self._kuka_api_pub)
 		rate.sleep()
-		pass
 
 	# Gets the joint state from the robot
 	# And sets the initial state of the robot in Rviz
@@ -266,20 +233,23 @@ def display_menu(pick_place):
 	if choice == 3:
 		print('Closing an application')
 		sys.exit()
+	elif choice == 4:
+		pick_place.open_grippers()
+		display_menu(pick_place)
+	elif choice == 5:
+		pick_place.close_grippers()
+		display_menu(pick_place)
 	elif choice == 2:
 		pick_place.move_to_home()
+		display_menu(pick_place)
 		pass
 	elif choice == 1:
 		pick_place.move_to_pose()
-		pass
+		display_menu(pick_place)
 
 if __name__ == '__main__':
 	pick_place = PickPlace()
 	rospy.sleep(2)
 	display_menu(pick_place)
-	#pick_place.set_robots_initial_state()
-	#rospy.sleep(2)
-	#pick_place.move_to_pose()
-
-	# Necessary to keep the node running
-	#rospy.spin()
+	if not self.sim:
+		pick_place.set_robots_initial_state()
