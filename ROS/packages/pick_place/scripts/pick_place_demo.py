@@ -69,7 +69,7 @@ class PickPlace():
 			sys.exit()
 		else:
 			pose = Pose()
-	
+
 			pose.orientation.x = args[0]
 			pose.orientation.y = args[1]
 			pose.orientation.z = args[2]
@@ -77,11 +77,21 @@ class PickPlace():
 			pose.position.x = args[4]
 			pose.position.y = args[5]
 			pose.position.z = args[6]
-	
+
 			return pose
 
+	# Moves the robot in simulation (and the actual robot in simulation is set to false) to a pose passed in
 	def perform_move(self, pose):
 		self._move_group.set_pose_target(pose)
+		self._move_group.go(wait=True)
+		self._move_group.stop()
+		self._move_group.clear_pose_targets()
+		if not self.sim:
+			self.move_robot()
+
+	# Moves robot in simulation (and the actual if simulation is set to false) back to home position
+	def move_to_home(self):
+		self._move_group.set_pose_target(self._pose_home)
 		self._move_group.go(wait=True)
 		self._move_group.stop()
 		self._move_group.clear_pose_targets()
