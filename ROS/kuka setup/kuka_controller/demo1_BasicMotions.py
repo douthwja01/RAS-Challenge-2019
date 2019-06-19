@@ -33,20 +33,5 @@ my_client.send_command('setCartVelocity 10000')     # If the CartVelocity is not
 # Move close to a start position.
 my_client.send_command('setPosition 0 49.43 0 -48.5 0 82.08 0')
 
-
-# Move to the exact start position.
-my_client.send_command('setPositionXYZABC 700 0 300 -180 0 -180 ptp')  # ptp motions move with setJointAcceleration
-
-
-# Performing three lin motions with max posible speed.
-my_client.send_command('setPositionXYZABC 500 100 400 - - - lin')  # lin motions move with CartVelocity
-my_client.send_command('setPositionXYZABC - -100 350 - - - lin')
-my_client.send_command('setPositionXYZABC 700 0 300 - - - lin')
-
-
-# Performing same motion slower (CartVelocity 50mm/s')
-my_client.send_command('setCartVelocity 50') # This only controls the lin motions.
-
-my_client.send_command('setPositionXYZABC 500 100 400 - - - lin')  # lin motions move with CartVelocity
-my_client.send_command('setPositionXYZABC - -100 350 - - - lin')
-my_client.send_command('setPositionXYZABC 700 0 300 - - - lin')
+while True:
+	pass
