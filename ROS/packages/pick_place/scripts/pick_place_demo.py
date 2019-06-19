@@ -233,12 +233,6 @@ def display_menu(pick_place):
 	if choice == 3:
 		print('Closing an application')
 		sys.exit()
-	elif choice == 4:
-		pick_place.open_grippers()
-		display_menu(pick_place)
-	elif choice == 5:
-		pick_place.close_grippers()
-		display_menu(pick_place)
 	elif choice == 2:
 		pick_place.move_to_home()
 		display_menu(pick_place)
