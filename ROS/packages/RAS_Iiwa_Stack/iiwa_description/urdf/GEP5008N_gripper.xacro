@@ -13,14 +13,14 @@
     </inertial> -->
 
     <visual>
-        <origin xyz="0.1 -0.037 -0.05" rpy="0 0 ${pi/2}"/>
+        <origin xyz="0.1 -0.037 -0.045" rpy="0 0 ${pi/2}"/>
         <geometry>
             <mesh filename="package://iiwa_description/meshes/GEP5008N_gripper/BRACKET ASSEMBLY.stl" scale="1 1 1"/>
         </geometry>
         <material name="gray"/>
     </visual>
     <collision>
-        <origin xyz="0.1 -0.037 -0.05" rpy="0 0 ${pi/2}"/>
+        <origin xyz="0.1 -0.037 -0.045" rpy="0 0 ${pi/2}"/>
             <geometry>
                 <mesh filename="package://iiwa_description/meshes/GEP5008N_gripper/BRACKET ASSEMBLY.stl" scale="1 1 1"/>        
             </geometry>

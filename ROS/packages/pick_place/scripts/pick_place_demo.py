@@ -36,7 +36,7 @@ class PickPlace():
 			# Publisher for Kuka API
 			self._kuka_api_pub = rospy.Publisher('/moveit_iiwa', String, queue_size=10)
 
-			# Poses 
+			# Predefined poses used for the 'pick and place' demo
 			self._pose_over_tools = self.create_pose(0.999, -0.000, -0.001, 0.045, 0.365, 0.164, 0.623)
 			self._pose_to_tools = self.create_pose(0.999, -0.001, -0.001, 0.045, 0.365, 0.155, 0.525)
 			self._pose_place_away = self.create_pose(0.999, 0.000, -0.001, 0.045, 0.687, 0.143, 0.385)
@@ -58,20 +58,27 @@ class PickPlace():
 
 		self._move_group.stop()
 
-	# Returns the Pose object created from arguments passed in
+	# Returns the Pose object created from arguments passed in as a tuple
 	def create_pose(self, *args):
-		print(args)
-		pose = Pose()
-
-		pose.orientation.x = args[0]
-		pose.orientation.y = args[1]
-		pose.orientation.z = args[2]
-		pose.orientation.w = args[3]
-		pose.position.x = args[4]
-		pose.position.y = args[5]
-		pose.position.z = args[6]
-
-		return pose
+		# Passed in tuple should contain seven variables
+		# Each representing part of the position of the robot
+		# Four variables for Orientation (using Quaternions XYZW)
+		# Three variables for Position (XYZ)
+		if len(args) != 7:
+			print("The function didn't receive enough parameters to create pose. \nExitting!")
+			sys.exit()
+		else:
+			pose = Pose()
+	
+			pose.orientation.x = args[0]
+			pose.orientation.y = args[1]
+			pose.orientation.z = args[2]
+			pose.orientation.w = args[3]
+			pose.position.x = args[4]
+			pose.position.y = args[5]
+			pose.position.z = args[6]
+	
+			return pose
 
 	def perform_move(self, pose):
 		self._move_group.set_pose_target(pose)
