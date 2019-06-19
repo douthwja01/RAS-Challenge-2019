@@ -4,11 +4,17 @@
   <xacro:include filename="$(find iiwa_description)/urdf/materials.xacro" />
   <!--Import the lbr iiwa macro -->
   <xacro:include filename="$(find iiwa_description)/urdf/iiwa14.xacro"/>
+
+<!-- END EFFORT CONFIGURATION -->
   <!--
   <xacro:include filename="$(find iiwa_description)/urdf/zimmer_hc01_gripper.xacro" />
   -->
   <xacro:include filename="$(find iiwa_description)/urdf/GEP5008N_gripper.xacro" />
-  
+  <!--
+  <xacro:include filename="$(find iiwa_description)/urdf/schunk_gripper.xacro" />
+-->
+<!-- ........................ -->
+
   <xacro:end_effector prefix=""/>
 
   <xacro:arg name="hardware_interface" default="PositionJointInterface"/>

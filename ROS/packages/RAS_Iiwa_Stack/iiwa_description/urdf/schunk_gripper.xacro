@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:macro name="end_effector" params="prefix">
+
+<material name="gray">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+</material>
+
+<!-- link list -->
+<link name="${prefix}gripper">
+    <!-- <inertial>
+    </inertial> -->
+
+    <visual>
+        <origin xyz="0 0 0.12" rpy="0 0 ${pi}"/>
+        <geometry>
+            <mesh filename="package://iiwa_description/meshes/Schunk_gripper/Assembly_Schunk.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="gray"/>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0.12" rpy="0 0 ${pi/2}"/>
+            <geometry>
+                <mesh filename="package://iiwa_description/meshes/Schunk_gripper/Assembly_Schunk.stl" scale="1 1 1"/>        
+            </geometry>
+            <material name="gray"/>
+    </collision>
+</link>
+<!-- <link name="${prefix}tool"/> -->
+<!-- end of link list -->
+<link name="${prefix}tool_tcp"/>
+<!-- join lists -->
+<joint name="${prefix}tool0-grip" type="fixed">
+    <parent link="${prefix}iiwa_link_ee"/>
+    <child link="${prefix}gripper"/>
+    <origin xyz="0 0 0" rpy="0 0 0 "/>
+</joint>
+
+<joint name="${prefix}grip_tcp" type="fixed">
+    <parent link="${prefix}gripper"/>
+    <child link="${prefix}tool_tcp"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0 "/>
+</joint>
+
+</xacro:macro>
+</robot>
