@@ -22,7 +22,6 @@ class PickPlace():
 			moveit_commander.roscpp_initialize(sys.argv)
 			rospy.init_node('iiwa_pick_place', anonymous=False)
 			move_group = "manipulator"
-			self.sim = rospy.get_param("/simulation")
 
 			# Instantiating a Robot Commander
 			self._robot = moveit_commander.RobotCommander()
@@ -86,8 +85,7 @@ class PickPlace():
 		self._move_group.go(wait=True)
 		self._move_group.stop()
 		self._move_group.clear_pose_targets()
-		if not self.sim:
-			self.move_robot()
+		self.move_robot()
 
 	# Moves robot in simulation (and the actual if simulation is set to false) back to home position
 	def move_to_home(self):
@@ -95,8 +93,7 @@ class PickPlace():
 		self._move_group.go(wait=True)
 		self._move_group.stop()
 		self._move_group.clear_pose_targets()
-		if not self.sim:
-			self.move_robot()
+		self.move_robot()
 
 	# Moves the robot to a pose
 	def move_to_pose(self):
@@ -148,14 +145,12 @@ class PickPlace():
 	# Sends the message to Kuka API asking the robot to open grippers
 	def open_grippers(self):
 		open_grippers_msg = 'OpenGripper'
-		if not self.sim:
-			self._kuka_api_pub.publish(open_grippers_msg)
+		self._kuka_api_pub.publish(open_grippers_msg)
 	
 	# Sends the message to Kuka API asking the robot to close grippers
 	def close_grippers(self):
 		close_grippers_msg = 'CloseGripper'
-		if not self.sim:
-			self._kuka_api_pub.publish(close_grippers_msg)
+		self._kuka_api_pub.publish(close_grippers_msg)
 
 	# Moves the robot to save position, defined in MoveIt! Config
 	def move_to_saved_position(self, name):
@@ -262,5 +257,8 @@ if __name__ == '__main__':
 	pick_place = PickPlace()
 	rospy.sleep(2)
 	display_menu(pick_place)
-	if not self.sim:
+	try:
 		pick_place.set_robots_initial_state()
+	except:
+		print("Couldn't set the initial state of the robot in simulation.\nNo actual robot connected")
+		pass
