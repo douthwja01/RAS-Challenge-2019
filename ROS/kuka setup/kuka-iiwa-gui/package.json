@@ -11,7 +11,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "electron": "^2.0.8",
+    "electron": "^9.1.0",
     "roboto-fontface": "^0.10.0",
     "rosnodejs": "^3.0.0"
   }
