@@ -1,3 +1,7 @@
+<p align="center">
+<img src="docs/RAS-kuka-iiwa-2.PNG" width="700" title="RAS Challenge 2019">
+</p>
+
 # UK-RAS Manufacturing Robotics Challenge
 
 The software respository for the RAS Challange held at the AMRC in June 2019.
@@ -35,7 +39,12 @@ Teams will be provided with a KUKA iiwa robot equipped with a gripper, microphon
 camera, and tray of parts. The robot will be integrated to allow safe operation but will require
 programming through ROS.
 
+<p align="center">
+<img src="docs/RAS-pc-robot.PNG" width="700" title="RAS Challenge 2019 interactive">
+</p>
+
 # Instruction to run the robot simulation:
+
 1. Ensure that ROS Master is running by typing `roscore` in the new terminal window.
   The terminal window can be opened using `Ctrl + Alt + t`
 2. Once the roscore is up and running open the new terminal window (`Ctrl + Shift + t`) and type the following `roslaunch iiwa_moveit moveit_planning_execution.launch`. This runs the simulation of the robot and the bench setup as default. If you wish to see the 'pick and place' demonstration with the actual robot, use this command: `roslaunch iiwa_moveit moveit_planning_execution.launch sim:=false`
